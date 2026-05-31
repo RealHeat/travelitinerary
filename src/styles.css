@@ -1,0 +1,364 @@
+/* =========================================================================
+   AROUND THE WORLD — APHuG Travel Itinerary
+   Design system: "Clean modern atlas" · warm earth tones
+   ---------------------------------------------------------------------------
+   Edit colors / fonts / spacing here once and the whole site updates.
+   ========================================================================= */
+
+:root {
+  /* ---- Palette (warm earth tones) ------------------------------------- */
+  --paper:        oklch(0.975 0.012 80);   /* warm paper background      */
+  --paper-2:      oklch(0.945 0.016 78);   /* card / panel background    */
+  --paper-3:      oklch(0.915 0.020 76);   /* deeper sand                */
+  --ink:          oklch(0.265 0.020 60);   /* near-black warm ink        */
+  --ink-soft:     oklch(0.430 0.022 62);   /* muted body text            */
+  --ink-faint:    oklch(0.620 0.018 66);   /* hints / captions           */
+  --line:         oklch(0.860 0.020 74);   /* hairline rules             */
+
+  --terracotta:   oklch(0.620 0.130 45);   /* primary accent             */
+  --forest:       oklch(0.520 0.090 152);  /* secondary accent           */
+  --ochre:        oklch(0.720 0.110 80);   /* tertiary accent            */
+
+  /* ---- Type — modern system (Apple) stack --------------------------- */
+  --sans:   -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --serif:  var(--sans);   /* alias kept so old references stay valid */
+  --mono:   var(--sans);   /* alias kept so old references stay valid */
+
+  /* ---- Spacing & shape ------------------------------------------------ */
+  --maxw: 1080px;
+  --gap: 22px;
+  --radius: 4px;
+  --shadow: 0 1px 2px oklch(0.4 0.02 60 / 0.06), 0 12px 32px oklch(0.4 0.02 60 / 0.07);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  color: var(--ink);
+  background-color: var(--paper);
+  /* subtle cartographic grid */
+  background-image:
+    linear-gradient(oklch(0.86 0.02 74 / 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.86 0.02 74 / 0.35) 1px, transparent 1px);
+  background-size: 56px 56px;
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* =========================================================================
+   NAV
+   ========================================================================= */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 14px clamp(16px, 4vw, 40px);
+  background: oklch(0.975 0.012 80 / 0.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: auto;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: var(--sans);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.nav__brand .compass {
+  width: 26px; height: 26px;
+  flex: none;
+  animation: spin-slow 60s linear infinite;
+}
+.nav__links { display: flex; flex-wrap: wrap; gap: 4px; }
+.nav__link {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ink-soft);
+  padding: 8px 13px;
+  border-radius: var(--radius);
+  transition: color 0.35s ease, background 0.35s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+.nav__link:hover { color: var(--ink); background: var(--paper-2); }
+.nav__link.is-active { color: var(--terracotta); background: oklch(0.62 0.13 45 / 0.10); }
+
+/* =========================================================================
+   PAGE SHELL + TRANSITIONS
+   ========================================================================= */
+.stage { max-width: var(--maxw); margin: 0 auto; padding: clamp(28px, 5vw, 64px) clamp(16px, 4vw, 40px) 120px; }
+
+.page { animation: pageRise 1.1s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@keyframes pageRise {
+  from { opacity: 0; transform: translateY(64px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+
+/* scroll-reveal — starts lower, glides up slowly */
+.reveal { opacity: 0; transform: translateY(70px); transition: opacity 1.25s cubic-bezier(0.16,1,0.3,1), transform 1.25s cubic-bezier(0.16,1,0.3,1); }
+/* `transform: none` (not translateY(0)) so a settled section stops being a
+   stacking context — otherwise it would trap the route hover-card's z-index
+   and let later sections paint over it. */
+.reveal.in { opacity: 1; transform: none; }
+
+/* =========================================================================
+   TYPE
+   ========================================================================= */
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--terracotta);
+  margin: 0 0 12px;
+}
+h1, h2, h3 { font-family: var(--sans); font-weight: 700; color: var(--ink); margin: 0; letter-spacing: -0.02em; }
+.display {
+  font-size: clamp(40px, 7vw, 78px);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.section-title { font-size: clamp(24px, 3.2vw, 34px); letter-spacing: -0.01em; }
+
+/* =========================================================================
+   PAGE HEADER (country pages)
+   ========================================================================= */
+.pagehead { border-bottom: 2px solid var(--ink); padding-bottom: 22px; margin-bottom: 8px; }
+.pagehead__eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--sans); font-size: 17px; font-weight: 600; letter-spacing: 0;
+  color: var(--terracotta); margin: 0 0 16px;
+}
+.pagehead__eyebrow .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--terracotta); }
+.pagehead__title { font-size: clamp(38px, 6.5vw, 68px); line-height: 1.0; letter-spacing: -0.03em; }
+.pagehead__sub { font-family: var(--sans); font-size: 16px; color: var(--ink-faint); margin-top: 12px; }
+
+/* =========================================================================
+   SECTION
+   ========================================================================= */
+.section { margin-top: 56px; }
+.section__head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; }
+.section__num {
+  font-family: var(--sans); font-size: 16px; font-weight: 600; color: var(--terracotta);
+  letter-spacing: 0; padding-top: 4px;
+}
+.section__head .section-title { flex: 1; }
+.section__rule { height: 1px; background: var(--line); flex: 1; align-self: center; }
+
+/* =========================================================================
+   FIELD (a labeled fill-in line)
+   ========================================================================= */
+.fields { display: grid; gap: 4px; }
+.field {
+  display: grid;
+  grid-template-columns: minmax(180px, 280px) 1fr;
+  gap: 18px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.field__label { font-size: 17px; font-weight: 600; color: var(--ink); }
+.field__hint { display: block; font-family: var(--sans); font-size: 13.5px; font-weight: 400; color: var(--ink-faint); margin-top: 5px; letter-spacing: 0; text-transform: none; }
+.field__value { font-size: 17px; color: var(--ink); }
+@media (max-width: 620px) {
+  .field { grid-template-columns: 1fr; gap: 6px; }
+}
+
+/* =========================================================================
+   LINE ITEMS (activities, food)
+   ========================================================================= */
+.items { display: grid; gap: 0; }
+.item {
+  display: flex; align-items: baseline; gap: 16px;
+  padding: 13px 0; border-bottom: 1px dashed var(--line);
+}
+.item__bullet { color: var(--terracotta); font-family: var(--sans); font-size: 17px; flex: none; }
+.item__text { flex: 1; font-size: 17px; color: var(--ink); }
+.item__cost { font-family: var(--sans); font-size: 15px; color: var(--ink-faint); flex: none; }
+
+/* =========================================================================
+   IMAGE SLOT (placeholder for an imported image)
+   ========================================================================= */
+.imageslot {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px;
+  min-height: 240px;
+  border: 1.5px dashed oklch(0.52 0.09 152 / 0.55);
+  border-radius: var(--radius);
+  background-color: oklch(0.945 0.016 78);
+  background-image: repeating-linear-gradient(
+    45deg,
+    oklch(0.52 0.09 152 / 0.06) 0px,
+    oklch(0.52 0.09 152 / 0.06) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  color: var(--forest);
+  text-align: center;
+  padding: 24px;
+}
+.imageslot__tag {
+  font-family: var(--sans); font-size: 17px; font-weight: 600;
+  letter-spacing: 0; color: var(--forest);
+  background: var(--paper); border: 1px solid oklch(0.52 0.09 152 / 0.4);
+  padding: 5px 14px; border-radius: 999px;
+}
+.imageslot__note { font-family: var(--sans); font-size: 14px; color: var(--ink-faint); }
+/* a real image fills the same slot footprint */
+.imageslot--filled { padding: 0; border-style: solid; background-image: none; overflow: hidden; }
+.imageslot__img { display: block; width: 100%; height: 100%; min-height: 240px; object-fit: cover; }
+.photos { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
+@media (max-width: 620px) { .photos { grid-template-columns: 1fr; } }
+.caption {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-top: 12px; font-size: 16px;
+}
+.caption__label { font-family: var(--sans); font-size: 15px; color: var(--ink-faint); flex: none; }
+
+/* =========================================================================
+   JOURNAL
+   ========================================================================= */
+.journal {
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--ochre);
+  border-radius: var(--radius);
+  padding: 26px 28px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.journal__hint { font-family: var(--sans); font-size: 14px; color: var(--ink-faint); margin: 0 0 14px; }
+.journal p { margin: 0; }
+
+/* =========================================================================
+   COST TABLE
+   ========================================================================= */
+.costtable { width: 100%; border-collapse: collapse; font-size: 17px; }
+.costtable th {
+  text-align: left; font-family: var(--sans); font-size: 15px; letter-spacing: 0;
+  color: var(--ink-faint); font-weight: 600;
+  padding: 12px 14px; border-bottom: 2px solid var(--ink);
+}
+.costtable th:last-child, .costtable td:last-child { text-align: right; }
+.costtable td { padding: 14px 14px; border-bottom: 1px dashed var(--line); }
+.costtable tr:last-child td { border-bottom: none; border-top: 2px solid var(--ink); font-weight: 700; }
+.costtable .total-row td { font-family: var(--sans); font-size: 19px; font-weight: 700; color: var(--ink); }
+
+/* =========================================================================
+   HOME
+   ========================================================================= */
+.hero { position: relative; padding: 30px 0 50px; display: flex; align-items: center; justify-content: space-between; gap: clamp(24px, 5vw, 72px); }
+.hero__text { flex: 1 1 auto; min-width: 0; }
+.hero__globe { flex: 0 0 auto; width: clamp(300px, 36vw, 460px); display: grid; place-items: center; animation: globeIn 1.6s cubic-bezier(0.16,1,0.3,1) both 0.2s; }
+.globe-canvas { display: block; touch-action: none; }
+@keyframes globeIn { from { opacity: 0; transform: translateY(40px) scale(0.92); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media (max-width: 860px) {
+  .hero { flex-direction: column-reverse; align-items: flex-start; }
+  .hero__globe { width: clamp(220px, 70vw, 340px); align-self: center; }
+}
+.hero__eyebrow { display: flex; align-items: center; gap: 12px; }
+.hero__rule { height: 1px; width: 60px; background: var(--terracotta); }
+.hero__title { margin: 22px 0 0; }
+.hero__lede { font-size: clamp(19px, 2.2vw, 23px); color: var(--ink-soft); max-width: 32ch; margin: 24px 0 0; line-height: 1.5; font-family: var(--sans); }
+
+.travelers { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 38px; }
+.traveler { display: flex; align-items: center; gap: 14px; }
+.traveler__badge {
+  width: 52px; height: 52px; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  font-family: var(--sans); font-size: 22px; font-weight: 700; color: var(--paper);
+}
+.traveler:nth-child(1) .traveler__badge { background: var(--terracotta); }
+.traveler:nth-child(2) .traveler__badge { background: var(--forest); }
+.traveler__role { font-family: var(--sans); font-size: 15px; letter-spacing: 0; color: var(--ink-faint); }
+.traveler__name { font-family: var(--sans); font-size: 24px; font-weight: 700; line-height: 1; letter-spacing: -0.01em; }
+
+/* trip meta strip */
+.meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-top: 50px; }
+.meta__cell { background: var(--paper); padding: 22px 24px; }
+.meta__k { font-family: var(--sans); font-size: 15px; font-weight: 500; letter-spacing: 0; color: var(--ink-faint); margin: 0 0 8px; }
+.meta__v { font-size: 18px; color: var(--ink); margin: 0; }
+
+/* route map block */
+.routemap { position: relative; margin-top: 22px; margin-bottom: 30px; }
+.route-node:focus { outline: none; }
+.route-node:focus-visible circle { stroke: var(--terracotta); stroke-width: 2.5; }
+
+/* hover/focus preview card popped from a route node.
+   The anchor positions the card at its node (and anchors edge cards inward);
+   the inner .route-card handles the entrance motion, so the two transforms
+   don't fight. */
+.route-card-anchor { position: absolute; z-index: 10; }
+.route-card {
+  width: 220px;
+  max-width: 70vw;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  font-family: var(--sans);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(14px) scale(0.96);
+  transform-origin: top center;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.route-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+.route-card__num { font-size: 15px; font-weight: 500; color: var(--ink-faint); }
+.route-card__country { font-size: 24px; font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; color: var(--ink); }
+.route-card__go { font-size: 15px; color: var(--terracotta); margin-top: 2px; }
+.route-path { animation: route-fade 1.6s ease both 0.3s; }
+@keyframes route-fade { from { opacity: 0; stroke-dashoffset: 80; } to { opacity: 0.9; stroke-dashoffset: 0; } }
+.route-node { opacity: 0; animation: node-pop 0.6s cubic-bezier(0.2,0.7,0.2,1) both; transition: transform 0.3s ease; transform-box: fill-box; transform-origin: center; }
+.route-node:hover { transform: scale(1.12); }
+.route-node:nth-child(2) { animation-delay: 0.5s; }
+.route-node:nth-child(3) { animation-delay: 0.7s; }
+.route-node:nth-child(4) { animation-delay: 0.9s; }
+.route-node:nth-child(5) { animation-delay: 1.1s; }
+.route-node:nth-child(6) { animation-delay: 1.3s; }
+.route-node:nth-child(7) { animation-delay: 1.5s; }
+.route-node:nth-child(8) { animation-delay: 1.7s; }
+@keyframes node-pop { from { opacity: 0; } to { opacity: 1; } }
+
+/* generic intro paragraph under section heads */
+.lede-sm { color: var(--ink-soft); font-size: 17px; max-width: 62ch; margin: -8px 0 22px; }
+
+/* link to embed */
+.embedlink { display: flex; align-items: baseline; gap: 12px; margin-top: 16px; font-size: 17px; flex-wrap: wrap; }
+.embedlink__k { font-family: var(--sans); font-size: 16px; font-weight: 500; color: var(--ink-faint); flex: none; }
+
+/* footer */
+.footer { text-align: center; padding: 0 20px 60px; font-family: var(--sans); font-size: 12px; color: var(--ink-faint); letter-spacing: 0.04em; }
