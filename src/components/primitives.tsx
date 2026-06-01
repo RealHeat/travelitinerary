@@ -98,11 +98,21 @@ export function Items({ children }: { children: ReactNode }) {
 }
 
 /* An image. If `image.src` is set it renders a real <img>; otherwise it shows
-   the dashed placeholder slot tagged with `tag`. */
-export function ImageSlot({ tag, image }: { tag: string; image?: ImageRef }) {
+   the dashed placeholder slot tagged with `tag`.
+   `contain` shows the whole image (good for wide maps); the default crops to a
+   tidy tile (good for the photo grid). */
+export function ImageSlot({
+  tag,
+  image,
+  contain,
+}: {
+  tag: string;
+  image?: ImageRef;
+  contain?: boolean;
+}) {
   if (image?.src) {
     return (
-      <div className="imageslot imageslot--filled">
+      <div className={'imageslot imageslot--filled' + (contain ? ' imageslot--contain' : '')}>
         <img className="imageslot__img" src={image.src} alt={image.caption || tag} />
       </div>
     );

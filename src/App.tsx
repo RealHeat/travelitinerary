@@ -23,7 +23,7 @@ import './styles.css';
 // The site map. label = nav text · path = route.
 const PAGES = [
   { path: '/', label: 'Home' },
-  ...trip.stops.map((s) => ({ path: `/stop/${s.stopNumber}`, label: `Stop ${s.stopNumber}` })),
+  ...trip.stops.map((s) => ({ path: `/stop/${s.stopNumber}`, label: s.country })),
 ];
 
 function Layout() {

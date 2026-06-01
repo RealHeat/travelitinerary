@@ -43,7 +43,7 @@ export function Home() {
           </div>
         </div>
 
-        <Globe />
+        <Globe stops={trip.stops} start={trip.startCoords} />
       </header>
 
       {/* ---- TRIP META ------------------------------------------------ */}
@@ -78,10 +78,12 @@ export function Home() {
 
       {/* ---- FINAL JOURNEY MAP ---------------------------------------- */}
       <Section num="02" title="Final Map · Full Journey">
-        <ImageSlot tag="image1" image={trip.finalMap} />
+        <ImageSlot tag="image1" image={trip.finalMap} contain />
         <div className="embedlink">
           <span className="embedlink__k">Map link / embed:</span>
-          <span>{trip.mapEmbedLink}</span>
+          <a className="embedlink__v" href={trip.mapEmbedLink} target="_blank" rel="noreferrer">
+            {trip.mapEmbedLink}
+          </a>
         </div>
       </Section>
 
@@ -90,14 +92,14 @@ export function Home() {
         <table className="costtable">
           <thead>
             <tr>
-              <th>Stop</th>
+              <th>Country</th>
               <th>Total (USD)</th>
             </tr>
           </thead>
           <tbody>
             {trip.grandTotal.perStop.map((value, i) => (
               <tr key={i}>
-                <td>Stop {i + 1}</td>
+                <td>{trip.stops[i].country}</td>
                 <td>{value}</td>
               </tr>
             ))}

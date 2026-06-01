@@ -28,6 +28,8 @@ export interface ImageRef {
 export interface CountryStop {
   stopNumber: number; // 1..7
   country: string; // page title
+  /** Map pin location, [longitude, latitude]. Used by the hero globe. */
+  coords: [number, number];
   region: string;
   datesOfVisit: string;
   capital: string;
@@ -64,6 +66,8 @@ export interface CountryStop {
   };
   journal: string;
   photos: ImageRef[];
+  /** Route map for this stop (optional). */
+  stopMap?: ImageRef;
   costSummary: {
     rows: CostLine[];
     total: CostLine;
@@ -75,6 +79,8 @@ export interface TripOverview {
   startDate: string;
   endDate: string;
   startingPoint: string;
+  /** Starting point location, [longitude, latitude]. Globe route starts here. */
+  startCoords?: [number, number];
   finalDestination: string;
   totalBudget: string;
   finalMap: ImageRef;
