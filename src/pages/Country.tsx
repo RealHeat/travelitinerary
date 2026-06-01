@@ -136,7 +136,11 @@ export function Country() {
 
       {/* ---- Journal --------------------------------------------------- */}
       <Section num="06" title="Journal">
-        <Journal>{stop.journal}</Journal>
+        {stop.journal.map((entry, i) => (
+          <div key={i} style={i ? { marginTop: '16px' } : undefined}>
+            <Journal author={entry.author}>{entry.text}</Journal>
+          </div>
+        ))}
       </Section>
 
       {/* ---- Photos (at least 2) -------------------------------------- */}

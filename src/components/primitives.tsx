@@ -151,10 +151,11 @@ export function CostTable({ rows, total }: { rows: CostLine[]; total: CostLine }
   );
 }
 
-/* A journal text block. */
-export function Journal({ children }: { children: ReactNode }) {
+/* A journal text block, optionally labelled with the author. */
+export function Journal({ author, children }: { author?: string; children: ReactNode }) {
   return (
     <div className="journal">
+      {author ? <p className="journal__hint">{author}</p> : null}
       <p>{children}</p>
     </div>
   );

@@ -64,7 +64,7 @@ export interface CountryStop {
     items: LineItem[];
     budget: string;
   };
-  journal: string;
+  journal: { author: string; text: string }[];
   photos: ImageRef[];
   /** Route map for this stop (optional). */
   stopMap?: ImageRef;
